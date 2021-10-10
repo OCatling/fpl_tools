@@ -3,19 +3,20 @@ import os
 import requests
 
 FPL_BASE_API_URL = 'https://fantasy.premierleague.com/api/'
-FPL_DATA_ENDPOINT = f'{FPL_BASE_API_URL}/bootstrap-static/'
+FPL_RAW_DATA_ENDPOINT = f'{FPL_BASE_API_URL}/bootstrap-static/'
 FPL_FIXTURES_ENDPOINT = f'{FPL_BASE_API_URL}/fixtures/'
 
-DATA_FILE = 'fpl_data.json'
-FIXTURE_FILE = 'fpl_fixtures.json'
+PATH = os.path.dirname(__file__)
+RAW_FILE_NAME = os.path.join(PATH, 'fpl_data.json')
+FIXTURE_FILE_NAME = os.path.join(PATH, 'fpl_fixtures.json')
 
 
-def download_data() -> None:
+def download_raw() -> None:
     response = requests.get(
-        url=FPL_FIXTURES_ENDPOINT,
+        url=FPL_RAW_DATA_ENDPOINT,
         params=None
     )
-    with open(f'./{DATA_FILE}', 'w') as outfile:
+    with open(RAW_FILE_NAME, 'w') as outfile:
         outfile.write(response.text)
 
 
@@ -27,23 +28,19 @@ def download_fixtures(gameweek=0) -> None:
         url=FPL_FIXTURES_ENDPOINT,
         params=params
     )
-    with open(f'./{FIXTURE_FILE}', 'w') as outfile:
+    with open(FIXTURE_FILE_NAME, 'w') as outfile:
         outfile.write(response.text)
 
 
-def get_data() -> list:
-    if not os.path.exists(DATA_FILE):
-        download_data()
-    with open(DATA_FILE, 'r') as infile:
+def get_raw() -> dict:
+    if not os.path.exists(RAW_FILE_NAME):
+        download_raw()
+    with open(RAW_FILE_NAME, 'r') as infile:
         return json.loads(infile.read())
 
 
 def get_fixtures(gameweek=0) -> list:
-    if not os.path.exists(FIXTURE_FILE):
+    if not os.path.exists(FIXTURE_FILE_NAME):
         download_fixtures(gameweek)
-    with open(FIXTURE_FILE, 'r') as infile:
+    with open(FIXTURE_FILE_NAME, 'r') as infile:
         return json.loads(infile.read())
-
-
-get_fixtures()
-get_data()
