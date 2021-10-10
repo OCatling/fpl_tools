@@ -1,7 +1,7 @@
 from src import data
 
 
-def get_teams() -> list:
+def get_teams() -> list[dict]:
     return data.get_raw()['teams']
 
 

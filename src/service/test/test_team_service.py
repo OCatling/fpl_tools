@@ -12,7 +12,7 @@ def test_get_teams():
         actual = team_service.get_teams()
 
         assert isinstance(actual, list)
-        assert len(actual) is 20
+        assert len(actual) == 20
 
 
 def test_get_team_from_name_exists():

@@ -39,7 +39,7 @@ def get_raw() -> dict:
         return json.loads(infile.read())
 
 
-def get_fixtures(gameweek=0) -> list:
+def get_fixtures(gameweek=0) -> list[dict]:
     if not os.path.exists(FIXTURE_FILE_NAME):
         download_fixtures(gameweek)
     with open(FIXTURE_FILE_NAME, 'r') as infile:
