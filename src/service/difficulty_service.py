@@ -1,7 +1,7 @@
 from collections import Counter
 from functools import reduce
 
-from src.service import fixture_service, team_service
+from src.service import fixture_service
 
 
 def get_period_difficulty_for_team_home_games(team_id: int, start_week: int, end_week: int) -> int:
@@ -53,17 +53,17 @@ def get_teams_with_easy_fixtures(start_week: int, end_week: int):
     ]
 
 
-def get_rotation_teams_for_home_fixtures(team_id: int, start_week: int, end_week: int) -> Counter:
-    fixtures = fixture_service.get_team_home_fixtures(team_id, start_week, end_week)
-    rotating_teams = Counter()
-    for fixture in fixtures:
-        if fixture['team_h_difficulty'] >= 4:
-            gameweek = fixture['event']
-            for f in get_teams_with_easy_fixtures(gameweek, gameweek):
-                teams = []
-                if f['team_h_difficulty'] <= 2:
-                    teams.append(team_service.get_team(f['team_h'])['name'])
-                if f['team_a_difficulty'] <= 2:
-                    teams.append(team_service.get_team(f['team_a'])['name'])
-                rotating_teams.update(teams)
-    return rotating_teams
+# def get_rotation_teams_for_home_fixtures(team_id: int, start_week: int, end_week: int) -> Counter:
+#     fixtures = fixture_service.get_team_home_fixtures(team_id, start_week, end_week)
+#     rotating_teams = Counter()
+#     for fixture in fixtures:
+#         if fixture['team_h_difficulty'] >= 4:
+#             gameweek = fixture['event']
+#             for f in get_teams_with_easy_fixtures(gameweek, gameweek):
+#                 teams = []
+#                 if f['team_h_difficulty'] <= 2:
+#                     teams.append(team_service.get_team(f['team_h'])['name'])
+#                 if f['team_a_difficulty'] <= 2:
+#                     teams.append(team_service.get_team(f['team_a'])['name'])
+#                 rotating_teams.update(teams)
+#     return rotating_teams
