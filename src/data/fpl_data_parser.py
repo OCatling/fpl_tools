@@ -13,24 +13,20 @@ def get_teams() -> dict[int: Team]:
 def get_fixtures() -> dict[int: list[Fixture]]:
     fixtures = fpl_data_fetcher.get_fixtures()
     teams = get_teams()
-    fixture_objs = {}
+    fixture_objs = []
     for fixture in fixtures:
         home_team_id = fixture["team_h"]
         home_team = teams[home_team_id]
         away_team_id = fixture["team_a"]
         away_team = teams[away_team_id]
 
-        gameweek = fixture["event"]
-        if gameweek not in fixture_objs.keys():
-            fixture_objs[gameweek] = []
-
         fixture_obj = Fixture(home_team, away_team, fixture)
-        fixture_objs[gameweek].append(fixture_obj)
+        fixture_objs.append(fixture_obj)
 
     return fixture_objs
 
 
-def get_league():
+def get_season():
     teams = get_teams()
     fixtures = get_fixtures()
     # TODO: unhardcode season

@@ -1,12 +1,12 @@
-from src.service.difficulty_service import get_teams_with_easy_fixtures
-from src.model.team import Team
+from src.data.fpl_data_parser import get_season
+
 
 if __name__ == "__main__":
     print("------------- FPL CLI ---------------")
     start_week = input("Enter Start Week: ")
     end_week = input("Enter End Week: ")
-    teams = get_teams_with_easy_fixtures(0, 5)
-    for team in teams:
-        t = Team(team)
-        print(f"{t.id}: {t.name}")
-        print("=========================")
+    season = get_season()
+
+    games = season.organise_fixtures_by_team(0, 3)
+    for key in games.keys():
+        print(f"{key}: {[f.away_team for f in games[key]['home']]}")

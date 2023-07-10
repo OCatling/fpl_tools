@@ -111,11 +111,3 @@ class Team:
     @points.setter
     def points(self, points: int) -> None:
         self._points = points
-
-    # @property
-    # def form(self):
-    #     return self._form
-    #
-    # @form.setter
-    # def form(self, form: str) -> None:
-    #     self._form = form

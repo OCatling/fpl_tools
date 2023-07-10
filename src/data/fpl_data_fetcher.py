@@ -7,9 +7,9 @@ FPL_RAW_DATA_ENDPOINT = f'{FPL_BASE_API_URL}/bootstrap-static/'
 FPL_FIXTURES_ENDPOINT = f'{FPL_BASE_API_URL}/fixtures/'
 
 PATH = os.path.dirname(__file__)
-DOWNLOAD_PATH = os.path.join(PATH, "___CACHE__")
-RAW_FILE_NAME = os.path.join(DOWNLOAD_PATH, '__CACHE__/fpl_data.json')
-FIXTURE_FILE_NAME = os.path.join(DOWNLOAD_PATH, '__CACHE__/fpl_fixtures.json')
+DOWNLOAD_PATH = os.path.join(PATH, "__CACHE__")
+RAW_FILE_NAME = os.path.join(DOWNLOAD_PATH, 'fpl_data.json')
+FIXTURE_FILE_NAME = os.path.join(DOWNLOAD_PATH, 'fpl_fixtures.json')
 
 
 def download_raw() -> None:

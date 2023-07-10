@@ -11,7 +11,7 @@ class Fixture:
         self._event = self._fixture["event"]
         self._fixture_id = self._fixture["id"]
 
-        self._kickoff_time = datetime.fromisoformat(self._fixture["kickoff_time"])
+        self._kickoff_time = datetime.strptime(self._fixture["kickoff_time"], '%Y-%m-%dT%H:%M:%Sz')
 
         self._home_team = home_team
         self._home_team_difficulty = self._fixture["team_h_difficulty"]

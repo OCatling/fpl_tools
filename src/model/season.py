@@ -5,7 +5,7 @@ from src.model.team import Team
 
 
 class Season:
-    def __init__(self, season: str, teams: dict[int, Team], fixtures: list[Fixture]) -> None:
+    def __init__(self, season: str, teams: dict, fixtures: list[Fixture]) -> None:
         self._season = season
         self._teams = teams
         self._fixtures = fixtures
@@ -15,7 +15,7 @@ class Season:
         return self._teams
 
     @teams.setter
-    def teams(self, teams: dict[int, Team]) -> None:
+    def teams(self, teams: dict) -> None:
         self._teams = teams
 
     @property
@@ -57,9 +57,13 @@ class Season:
             fixtures_by_gameweek[fixture.event].append(fixture)
         return fixtures_by_gameweek
 
-    def organise_fixtures_by_team(self, starting_week: int = 0, finishing_week: int = 38):
+    def organise_fixtures_by_team(self,
+                                  starting_week: int = 0,
+                                  finishing_week: int = 38
+                                  ) -> dict[str: dict[str: list[Fixture]]]:
         fixtures = self.get_specific_gameweek_range(starting_week, finishing_week)
-        fixtures_by_team = {team.name: {"home": [], "away": []} for team in self.teams}
+        fixtures_by_team = {team.name: {"home": [], "away": []} for team in self.teams.values()}
         for fixture in fixtures:
-            fixtures_by_team[fixture.home_team]["home"].append(fixture)
-            fixtures_by_team[fixture.away_team]["away"].append(fixture)
+            fixtures_by_team[fixture.home_team.name]["home"].append(fixture)
+            fixtures_by_team[fixture.away_team.name]["away"].append(fixture)
+        return fixtures_by_team
