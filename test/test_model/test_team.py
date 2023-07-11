@@ -16,7 +16,7 @@ team = {
     'unavailable': False,
     'win': 6,
     'strength_overall_home': 1125,
-    'strength_overall_away': 1205,
+    'strength_overall_"away_games"': 1205,
     'strength_attack_home': 1120,
     'strength_attack_away': 1220,
     'strength_defence_home': 1130,

@@ -45,8 +45,12 @@ class Season:
     def delete_fixture(self, fixture):
         self._fixtures.remove(fixture)
 
-    def get_specific_gameweek_range(self, starting_week: int = 0, finishing_week: int = 38):
-        return [f for f in self.fixtures if starting_week <= f.event <= finishing_week]
+    def get_specific_gameweek_range(self, starting_week: int = 0, finish_week: int = 38):
+        return [f for f in self.fixtures if starting_week <= f.event <= finish_week]
+
+    def get_teams_fixtures(self, team_id: int, starting_week: int = 0, finish_week: int = 38) -> list[Fixture]:
+        fixtures = self.get_specific_gameweek_range(starting_week, finish_week)
+        return [f for f in fixtures if f.home_team.id == team_id or f.away_team.id == team_id]
 
     def organise_fixtures_by_gameweek(self, starting_week: int = 0, finishing_week: int = 38) -> dict[int, list]:
         fixtures = self.get_specific_gameweek_range(starting_week, finishing_week)
@@ -62,8 +66,10 @@ class Season:
                                   finishing_week: int = 38
                                   ) -> dict[str: dict[str: list[Fixture]]]:
         fixtures = self.get_specific_gameweek_range(starting_week, finishing_week)
-        fixtures_by_team = {team.name: {"home": [], "away": []} for team in self.teams.values()}
+        fixtures_by_team = {team.id: {"team_name": team.name, "home_games": [], "away_games": [], "all_games": []} for team in self.teams.values()}
         for fixture in fixtures:
-            fixtures_by_team[fixture.home_team.name]["home"].append(fixture)
-            fixtures_by_team[fixture.away_team.name]["away"].append(fixture)
+            fixtures_by_team[fixture.home_team.id]["home_games"].append(fixture)
+            fixtures_by_team[fixture.home_team.id]["all_games"].append(fixture)
+            fixtures_by_team[fixture.away_team.id]["away_games"].append(fixture)
+            fixtures_by_team[fixture.away_team.id]["all_games"].append(fixture)
         return fixtures_by_team
