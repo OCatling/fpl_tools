@@ -1,4 +1,5 @@
 from src.data import fpl_data_fetcher
+from src.model.fantasy_player import FantasyPlayer
 from src.model.fixture import Fixture
 from src.model.season import Season
 from src.model.team import Team
@@ -31,3 +32,8 @@ def get_season():
     fixtures = get_fixtures()
     # TODO: unhardcode season
     return Season("2023/2024", teams, fixtures)
+
+
+def get_players() -> list[FantasyPlayer]:
+    raw_players = fpl_data_fetcher.get_raw()["elements"]
+    return [FantasyPlayer(player) for player in raw_players]
