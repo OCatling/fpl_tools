@@ -30,8 +30,9 @@ def get_fixtures() -> dict[int: list[Fixture]]:
 def get_season():
     teams = get_teams()
     fixtures = get_fixtures()
+    players = get_players()
     # TODO: unhardcode season
-    return Season("2023/2024", teams, fixtures)
+    return Season("2023/2024", teams, fixtures, players)
 
 
 def get_players() -> list[FantasyPlayer]:

@@ -12,12 +12,15 @@ class Player:
         self.web_name = player_dict['web_name']
         self.id = player_dict['id']
         self.team = player_dict['team']
-        self.element_type = player_dict['element_type']
+        self.position = player_dict['element_type']
         self.code = player_dict['code']
         self.squad_number = player_dict['squad_number']
         self.photo = player_dict['photo']
         self.news = player_dict['news']
         self.news_added = player_dict['news_added']
+
+        self.team_code = player_dict['team_code']
+        self.team_id = player_dict['team']
 
         self.starts = player_dict['starts']
         self.starts_per_90 = player_dict['starts_per_90']

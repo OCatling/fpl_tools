@@ -24,8 +24,8 @@ class FantasyPlayer(Player):
         self.value_season = fantasy_player_dict['value_season']
 
         self.selected_by_percent = fantasy_player_dict['selected_by_percent']
-        self.selected_by_percent_rank = fantasy_player_dict['selected_by_percent_rank']
-        self.selected_by_percent_rank_type = fantasy_player_dict['selected_by_percent_rank_type']
+        # self.selected_by_percent_rank = fantasy_player_dict['selected_by_percent_rank']
+        # self.selected_by_percent_rank_type = fantasy_player_dict['selected_by_percent_rank_type']
 
         self.ep_this = fantasy_player_dict['ep_this']
         self.ep_next = fantasy_player_dict['ep_next']

@@ -1,14 +1,18 @@
 from __future__ import annotations
 
 from src.model.fixture import Fixture
+from src.model.player import Player
 from src.model.team import Team
 
 
 class Season:
-    def __init__(self, season: str, teams: dict, fixtures: list[Fixture]) -> None:
+    _players: list[Player] = None
+
+    def __init__(self, season: str, teams: dict, fixtures: list[Fixture], players: list[Player]) -> None:
         self._season = season
         self._teams = teams
         self._fixtures = fixtures
+        self.players = players
 
     @property
     def teams(self) -> dict[int: Team]:
@@ -25,6 +29,16 @@ class Season:
     @fixtures.setter
     def fixtures(self, fixtures: list[Fixture]) -> None:
         self._fixtures = fixtures
+
+    @property
+    def players(self) -> list[Player]:
+        return self._players
+
+    @players.setter
+    def players(self, players: list[Player]) -> None:
+        if not isinstance(players, list):
+            raise TypeError("players must be a list of Player objects")
+        self._players = players
 
     def get_team(self, _id: int) -> Team:
         return self._teams[_id]
@@ -44,6 +58,35 @@ class Season:
 
     def delete_fixture(self, fixture):
         self._fixtures.remove(fixture)
+
+    def get_player(self, _id: int) -> Player:
+        return self._players[_id]
+
+    def get_organize_players_by_team(self) -> dict[int: list[Player]]:
+        players_by_team = {}
+        for player in self._players:
+            if player.team_id not in players_by_team.keys():
+                players_by_team[player.team_id] = []
+            players_by_team[player.team_id].append(player)
+        return players_by_team
+
+    def get_organize_players_by_position(self) -> dict[str: list[Player]]:
+        players_by_position = {}
+        for player in self._players:
+            if player.position not in players_by_position.keys():
+                players_by_position[player.position] = []
+            players_by_position[player.position].append(player)
+        return players_by_position
+
+    def get_organize_players_by_team_and_position(self) -> dict[int: dict[str: list[Player]]]:
+        players_by_team_and_position = {}
+        for player in self._players:
+            if player.team_id not in players_by_team_and_position.keys():
+                players_by_team_and_position[player.team_id] = {}
+            if player.position not in players_by_team_and_position[player.team_id].keys():
+                players_by_team_and_position[player.team_id][player.position] = []
+            players_by_team_and_position[player.team_id][player.position].append(player)
+        return players_by_team_and_position
 
     def get_specific_gameweek_range(self, starting_week: int = 0, finish_week: int = 38):
         return [f for f in self.fixtures if starting_week <= f.event <= finish_week]

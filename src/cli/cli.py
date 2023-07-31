@@ -28,3 +28,8 @@ if __name__ == "__main__":
     elif args.service == "player":
         players = get_players()
         print(players)
+
+    elif args.service == "draft":
+        season = get_season()
+
+
