@@ -1,69 +1,60 @@
-from collections import Counter
 from functools import reduce
 
-from src.service import fixture_service
+from src.model.fixture import Fixture
+from src.model.season import Season
+from src.model.team import Team
 
 
-def get_period_difficulty_for_team_home_games(team_id: int, start_week: int, end_week: int) -> int:
-    fixtures = fixture_service.get_team_home_fixtures(team_id, start_week, end_week)
-    return reduce(lambda x, y: x + y['team_h_difficulty'], fixtures, 0)
+class DifficultyService:
+    def __init__(self, season: Season, teams_to_exclude: list[Team] = None):
+        self._season = season
+        if not teams_to_exclude:
+            teams_to_exclude = []
+        self._teams_to_exclude = teams_to_exclude
 
+    @property
+    def season(self) -> Season:
+        return self._season
 
-def get_period_difficulty_for_team_away_games(team_id: int, start_week: int, end_week: int) -> int:
-    fixtures = fixture_service.get_team_away_fixtures(team_id, start_week, end_week)
-    return reduce(lambda x, y: x + y['team_a_difficulty'], fixtures, 0)
+    @season.setter
+    def season(self, season: Season) -> None:
+        self._season = season
 
+    @staticmethod
+    def get_difficulty_from_home_fixtures(fixtures: list[Fixture]) -> int:
+        return reduce(lambda x, y: x + y.home_team_difficulty, fixtures, 0)
 
-def get_period_difficulty_for_team(team_id: int, start_week: int, end_week: int) -> int:
-    return get_period_difficulty_for_team_home_games(team_id, start_week, end_week) + \
-           get_period_difficulty_for_team_away_games(team_id, start_week, end_week)
+    @staticmethod
+    def get_difficulty_from_away_fixtures(fixtures: list[Fixture]) -> int:
+        return reduce(lambda x, y: x + y.away_team_difficulty, fixtures, 0)
 
+    def get_team_difficulty_for_home_games(self, team_id: int, starting_week: int = 0, finish_week: int = 38) -> int:
+        fixtures = self.season.organise_fixtures_by_team(starting_week, finish_week)
+        team_home_fixtures: list[Fixture] = fixtures[team_id]["home_games"]
+        return self.get_difficulty_from_home_fixtures(team_home_fixtures)
 
-def get_teams_with_easy_home_fixtures(start_week: int, end_week: int) -> list[dict]:
-    teams_with_easy_fixtures = [
-        team_service.get_team(fixture['team_h']) for fixture
-        in fixture_service.get_fixtures(start_week, end_week)
-        if fixture['team_h_difficulty'] < 3
-    ]
-    return [
-        dict(team) for team
-        in {tuple(d.items()) for d in teams_with_easy_fixtures}
-    ]
+    def get_team_difficulty_for_away_games(self, team_id: int, starting_week: int = 0, finish_week: int = 38) -> int:
+        fixtures = self.season.organise_fixtures_by_team(starting_week, finish_week)
+        team_away_fixtures: list[Fixture] = fixtures[team_id]["away_games"]
+        return self.get_difficulty_from_away_fixtures(team_away_fixtures)
 
+    def get_teams_period_difficulty(self, team_id: int, starting_week: int = 0, finish_week: int = 38) -> int:
+        return self.get_team_difficulty_for_home_games(team_id, starting_week, finish_week) + \
+            self.get_team_difficulty_for_away_games(team_id, starting_week, finish_week)
 
-def get_teams_with_easy_away_fixtures(start_week: int, end_week: int) -> list[dict]:
-    teams_with_easy_fixtures = [
-        team_service.get_team(fixture['team_a']) for fixture
-        in fixture_service.get_fixtures(start_week, end_week)
-        if fixture['team_a_difficulty'] < 3
-    ]
-    return [
-        dict(team) for team
-        in {tuple(d.items()) for d in teams_with_easy_fixtures}
-    ]
+    def get_all_teams_period_difficulty(self, starting_week: int = 0, finish_week: int = 38):
+        fixtures_organised_by_team = self.season.organise_fixtures_by_team(starting_week, finish_week)
+        for team_id, team_data in fixtures_organised_by_team.items():
+            home_difficulty = self.get_difficulty_from_home_fixtures(team_data["home_games"])
+            away_difficulty = self.get_difficulty_from_away_fixtures(team_data["away_games"])
 
+            fixtures_organised_by_team[team_id]["home_difficulty"] = home_difficulty
+            fixtures_organised_by_team[team_id]["away_difficulty"] = away_difficulty
+            fixtures_organised_by_team[team_id]["difficulty"] = home_difficulty + away_difficulty
 
-def get_teams_with_easy_fixtures(start_week: int, end_week: int):
-    teams_with_easy_fixtures = \
-        get_teams_with_easy_home_fixtures(start_week, end_week) + \
-        get_teams_with_easy_away_fixtures(start_week, end_week)
-    return [
-        dict(team) for team
-        in {tuple(d.items()) for d in teams_with_easy_fixtures}
-    ]
+        return fixtures_organised_by_team
 
+    def get_list_of_teams_sorted_by_period_difficulty(self, starting_week: int = 0, finish_week: int = 38):
+        fixtures_organised_by_team = self.get_all_teams_period_difficulty(starting_week, finish_week)
+        return sorted(fixtures_organised_by_team.values(), key=lambda x: x["difficulty"], reverse=True)
 
-# def get_rotation_teams_for_home_fixtures(team_id: int, start_week: int, end_week: int) -> Counter:
-#     fixtures = fixture_service.get_team_home_fixtures(team_id, start_week, end_week)
-#     rotating_teams = Counter()
-#     for fixture in fixtures:
-#         if fixture['team_h_difficulty'] >= 4:
-#             gameweek = fixture['event']
-#             for f in get_teams_with_easy_fixtures(gameweek, gameweek):
-#                 teams = []
-#                 if f['team_h_difficulty'] <= 2:
-#                     teams.append(team_service.get_team(f['team_h'])['name'])
-#                 if f['team_a_difficulty'] <= 2:
-#                     teams.append(team_service.get_team(f['team_a'])['name'])
-#                 rotating_teams.update(teams)
-#     return rotating_teams

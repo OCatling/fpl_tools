@@ -1,7 +1,7 @@
 from src.model.fantasy_player import FantasyPlayer
 
 
-class Draft:
+class Squad:
     _goalkeepers: list
     _defenders: list
     _midfielders: list
@@ -111,6 +111,30 @@ class Draft:
 
     def remove_forward(self, forward: FantasyPlayer) -> None:
         self.forwards.remove(forward)
+
+    def add_player(self, player: FantasyPlayer) -> None:
+        if player.position == 1:
+            self.add_goalkeeper(player)
+        elif player.position == 2:
+            self.add_defender(player)
+        elif player.position == 3:
+            self.add_midfielder(player)
+        elif player.position == 4:
+            self.add_forward(player)
+        else:
+            raise ValueError("Invalid position")
+
+    def remove_player(self, player: FantasyPlayer) -> None:
+        if player.position == 1:
+            self.remove_goalkeeper(player)
+        elif player.position == 2:
+            self.remove_defender(player)
+        elif player.position == 3:
+            self.remove_midfielder(player)
+        elif player.position == 4:
+            self.remove_forward(player)
+        else:
+            raise ValueError("Invalid position")
 
     def get_total_cost(self) -> int:
         return sum([player.now_cost for player in self.get_players()])

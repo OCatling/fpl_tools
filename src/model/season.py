@@ -62,17 +62,32 @@ class Season:
     def get_player(self, _id: int) -> Player:
         return self._players[_id]
 
-    def get_organize_players_by_team(self) -> dict[int: list[Player]]:
+    def add_player(self, player: Player) -> None:
+        self._players.append(player)
+
+    def delete_player(self, player: Player) -> None:
+        self._players.remove(player)
+
+    def get_players_by_team(self, team: Team) -> list[Player]:
+        return [player for player in self._players if player.team == team]
+
+    def get_players_by_position(self, position: str) -> list[Player]:
+        return [player for player in self._players if player.position == position]
+
+    def get_players_by_team_and_position(self, team: Team, position: str) -> list[Player]:
+        return [player for player in self._players if player.team == team and player.position == position]
+
+    def get_players_organised_by_team(self) -> dict[int: list[Player]]:
         players_by_team = {}
-        for player in self._players:
+        for player in self.players:
             if player.team_id not in players_by_team.keys():
                 players_by_team[player.team_id] = []
             players_by_team[player.team_id].append(player)
         return players_by_team
 
-    def get_organize_players_by_position(self) -> dict[str: list[Player]]:
+    def get_players_organised_by_position(self) -> dict[str: list[Player]]:
         players_by_position = {}
-        for player in self._players:
+        for player in self.players:
             if player.position not in players_by_position.keys():
                 players_by_position[player.position] = []
             players_by_position[player.position].append(player)
@@ -80,7 +95,7 @@ class Season:
 
     def get_organize_players_by_team_and_position(self) -> dict[int: dict[str: list[Player]]]:
         players_by_team_and_position = {}
-        for player in self._players:
+        for player in self.players:
             if player.team_id not in players_by_team_and_position.keys():
                 players_by_team_and_position[player.team_id] = {}
             if player.position not in players_by_team_and_position[player.team_id].keys():
