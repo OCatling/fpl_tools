@@ -37,7 +37,7 @@ def download_fixtures(fixtures_file_name="", gameweek=0) -> None:
         outfile.write(response.text)
 
 
-def get_raw(raw_file_name) -> dict:
+def get_raw(raw_file_name="") -> dict:
     if not raw_file_name:
         raw_file_name = RAW_FILE_NAME
     if not os.path.exists(raw_file_name):

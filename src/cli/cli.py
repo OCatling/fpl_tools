@@ -1,9 +1,15 @@
 import argparse
 
+from colorama import init as colorama_init
+from colorama import Fore
+from colorama import Style
+
 from src.data.fpl_data_parser import get_season, get_players
 from src.model.squad import Squad
 from src.model.season import Season
 from src.service.difficulty_service import DifficultyService
+
+colorama_init()
 
 
 def get_parser():
@@ -69,7 +75,10 @@ if __name__ == "__main__":
         for team in teams:
             print(f"{team['team_name']}: {team['difficulty']}")
             for fixture in team["all_games"]:
-                print(f"{fixture.home_team.name}[{fixture.home_team_difficulty}] v {fixture.away_team.name}[{fixture.away_team_difficulty}]")
+                home_colour = Fore.GREEN if fixture.home_team.name == team['team_name'] else Fore.WHITE
+                away_colour = Fore.GREEN if fixture.away_team.name == team['team_name'] else Fore.WHITE
+                print(f"{home_colour}{fixture.home_team.name}[{fixture.home_team_difficulty}]{Style.RESET_ALL} "
+                      f"v {away_colour}{fixture.away_team.name}[{fixture.away_team_difficulty}]{Style.RESET_ALL}")
             print("-------------------------------")
     elif args.service == "player":
         players = get_players()
