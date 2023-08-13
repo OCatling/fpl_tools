@@ -60,7 +60,10 @@ class Season:
         self._fixtures.remove(fixture)
 
     def get_player(self, _id: int) -> Player:
-        return self._players[_id]
+        player = [player for player in self._players if player.id == _id]
+        if len(player) == 0:
+            raise ValueError(f"Player with id {_id} not found")
+        return player[0]
 
     def add_player(self, player: Player) -> None:
         self._players.append(player)

@@ -22,3 +22,6 @@ venv.bak/
 
 # DATA
 fpl_*.json
+
+# BUILD
+.aws-sam/

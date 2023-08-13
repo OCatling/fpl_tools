@@ -1,7 +1,7 @@
 from src.model.player import Player
 
 
-class Team:
+class Team(dict):
     _players: list[Player] = None
 
     _id: int = None
@@ -22,6 +22,7 @@ class Team:
     _form = None
 
     def __init__(self, team: dict):
+        dict.__init__(self, team)
         self._team = team
         self.id = self._team["id"]
         self.name = self._team["name"]

@@ -1,0 +1,8 @@
+{
+  "queryStringParameters": {
+    "team_id": 1
+  },
+  "resource": "/teams/{team_id}",
+  "path": "/teams/1",
+  "httpMethod": "GET"
+}

@@ -1,12 +1,6 @@
-# {
-#     'team': 1,
-#     'team_code': 3,
-#  }
-# write a python class to represent the above data
-
-
-class Player:
+class Player(dict):
     def __init__(self, player_dict: dict) -> None:
+        dict.__init__(self, **player_dict)
         self.first_name = player_dict['first_name']
         self.second_name = player_dict['second_name']
         self.web_name = player_dict['web_name']
@@ -55,3 +49,6 @@ class Player:
         self.expected_assists = player_dict['expected_assists']
         self.expected_goal_involvements = player_dict['expected_goal_involvements']
         self.expected_goals_conceded = player_dict['expected_goals_conceded']
+
+    def __str__(self) -> str:
+        return f"{self.web_name} ({self.id})"
