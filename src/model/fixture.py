@@ -3,8 +3,9 @@ from datetime import datetime
 from src.model.team import Team
 
 
-class Fixture:
+class Fixture(dict):
     def __init__(self, home_team: Team, away_team: Team, fixture: dict) -> None:
+        dict.__init__(self, fixture)
         self._fixture = fixture
 
         self._code = self._fixture["code"]

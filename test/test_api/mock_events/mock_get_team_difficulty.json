@@ -1,0 +1,8 @@
+{
+  "queryStringParameters": {
+    "team_id": 1
+  },
+  "resource": "/difficulty/{team_id}/{starting_week}/{ending_week}",
+  "path": "/difficulty/1/0/4",
+  "httpMethod": "GET"
+}

@@ -42,7 +42,7 @@ class DifficultyService:
         return self.get_team_difficulty_for_home_games(team_id, starting_week, finish_week) + \
             self.get_team_difficulty_for_away_games(team_id, starting_week, finish_week)
 
-    def get_all_teams_period_difficulty(self, starting_week: int = 0, finish_week: int = 38):
+    def get_all_teams_period_difficulty(self, starting_week: int = 0, finish_week: int = 38) -> dict[int, dict[str, int]]:
         fixtures_organised_by_team = self.season.organise_fixtures_by_team(starting_week, finish_week)
         for team_id, team_data in fixtures_organised_by_team.items():
             home_difficulty = self.get_difficulty_from_home_fixtures(team_data["home_games"])

@@ -12,8 +12,8 @@ router = Router()
 @tracer.capture_method
 def get_players():
     season = get_season()
-    logger.info({"players": season.players})
-    return {"players": season.players}
+    logger.info(f"players={season.players}")
+    return season.players
 
 
 @router.get("/<player_id>")
