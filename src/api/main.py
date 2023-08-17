@@ -3,7 +3,7 @@ from aws_lambda_powertools.event_handler import APIGatewayRestResolver
 from aws_lambda_powertools.logging import correlation_paths
 from aws_lambda_powertools.utilities.typing import LambdaContext
 
-from src.api.router.v1 import teams, players, difficulty
+from src.api.router.v1 import teams, players, difficulty, squad
 
 tracer = Tracer()
 logger = Logger()
@@ -12,6 +12,7 @@ app = APIGatewayRestResolver()
 app.include_router(players.router, prefix="/players")
 app.include_router(teams.router, prefix="/teams")
 app.include_router(difficulty.router, prefix="/difficulty")
+app.include_router(squad.router, prefix="/squad")
 
 
 @logger.inject_lambda_context(correlation_id_path=correlation_paths.API_GATEWAY_REST)

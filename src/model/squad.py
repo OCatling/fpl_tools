@@ -1,33 +1,41 @@
+import uuid
+
 from src.model.fantasy_player import FantasyPlayer
 
 
-class Squad:
+class Squad(dict):
+    _squad_id: str
     _goalkeepers: list
     _defenders: list
     _midfielders: list
     _forwards: list
 
-    def __init__(self,
-                 goalkeepers: list = None,
-                 defenders: list = None,
-                 midfielders: list = None,
-                 forwards: list = None
-                 ) -> None:
-        if goalkeepers is None:
-            goalkeepers = []
+    def __init__(self, squad_id: str = None, players: list[FantasyPlayer] = None, *args, **kwargs) -> None:
+        self.squad_id = squad_id or str(uuid.uuid4())
+
+        if not players:
+            players = []
+
+        goalkeepers = kwargs.get("goalkeepers") or [player for player in players if player.position == "GKP"]
+        defenders = kwargs.get("defenders") or [player for player in players if player.position == "DEF"]
+        midfielders = kwargs.get("midfielders") or [player for player in players if player.position == "MID"]
+        forwards = kwargs.get("forwards") or [player for player in players if player.position == "FWD"]
+
         self.goalkeepers = goalkeepers
-
-        if defenders is None:
-            defenders = []
         self.defenders = defenders
-
-        if midfielders is None:
-            midfielders = []
         self.midfielders = midfielders
-
-        if forwards is None:
-            forwards = []
         self.forwards = forwards
+        dict.__init__(self, goalkeepers=goalkeepers, defenders=defenders, midfielders=midfielders, forwards=forwards)
+
+    @property
+    def squad_id(self) -> str:
+        return self._squad_id
+
+    @squad_id.setter
+    def squad_id(self, squad_id: str) -> None:
+        if not isinstance(squad_id, str):
+            raise TypeError("squad_id must be a string")
+        self._squad_id = squad_id
 
     @property
     def goalkeepers(self) -> list:
@@ -79,6 +87,9 @@ class Squad:
 
     def get_players(self) -> list[FantasyPlayer]:
         return self.goalkeepers + self.defenders + self.midfielders + self.forwards
+
+    def get_players_ids(self) -> list[str]:
+        return [player.id for player in self.get_players()]
 
     def add_goalkeeper(self, goalkeeper: FantasyPlayer) -> None:
         if len(self.goalkeepers) == 2:
@@ -143,4 +154,8 @@ class Squad:
         return sum([player.total_points for player in self.get_players()])
 
     def __str__(self) -> str:
-        return f"Draft(goalkeepers={self.goalkeepers}, defenders={self.defenders}, midfielders={self.midfielders}, forwards={self.forwards})"
+        return f"Squad(squad_id={self.squad_id}," \
+               f"goalkeepers={self.goalkeepers}, " \
+               f"defenders={self.defenders}, " \
+               f"midfielders={self.midfielders}, " \
+               f"forwards={self.forwards})"

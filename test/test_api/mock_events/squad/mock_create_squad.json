@@ -1,0 +1,5 @@
+{
+  "resource": "/squad/{user_id}",
+  "path": "/squad/ocatling",
+  "httpMethod": "POST"
+}

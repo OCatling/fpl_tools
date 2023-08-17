@@ -12,7 +12,7 @@ Globals:
     BinaryMediaTypes: # see Binary responses section
       - "*~1*" # converts to */* for any binary type
   Function:
-    Timeout: 30
+    Timeout: 60
     Runtime: python3.9
     Tracing: Active
     Environment:
@@ -37,6 +37,20 @@ Resources:
             # explicit routes and methods are recommended for prod instead (see below)
             Path: /{proxy+} # Send requests on any path to the lambda function
             Method: ANY # Send requests using any http method to the lambda function
+  FPL:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: <primary_key>
+          AttributeType: S
+      KeySchema:
+        - AttributeName: <partition_key>
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
 
 
         # GetAllTodos:

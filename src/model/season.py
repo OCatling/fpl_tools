@@ -1,14 +1,14 @@
 from __future__ import annotations
 
+from src.model.fantasy_player import FantasyPlayer
 from src.model.fixture import Fixture
-from src.model.player import Player
 from src.model.team import Team
 
 
 class Season:
-    _players: list[Player] = None
+    _players: list[FantasyPlayer] = None
 
-    def __init__(self, season: str, teams: dict, fixtures: list[Fixture], players: list[Player]) -> None:
+    def __init__(self, season: str, teams: dict, fixtures: list[Fixture], players: list[FantasyPlayer]) -> None:
         self._season = season
         self._teams = teams
         self._fixtures = fixtures
@@ -31,13 +31,13 @@ class Season:
         self._fixtures = fixtures
 
     @property
-    def players(self) -> list[Player]:
+    def players(self) -> list[FantasyPlayer]:
         return self._players
 
     @players.setter
-    def players(self, players: list[Player]) -> None:
+    def players(self, players: list[FantasyPlayer]) -> None:
         if not isinstance(players, list):
-            raise TypeError("players must be a list of Player objects")
+            raise TypeError("players must be a list of FantasyPlayer objects")
         self._players = players
 
     def get_team(self, _id: int) -> Team:
@@ -59,28 +59,28 @@ class Season:
     def delete_fixture(self, fixture):
         self._fixtures.remove(fixture)
 
-    def get_player(self, _id: int) -> Player:
+    def get_player(self, _id: int) -> FantasyPlayer:
         player = [player for player in self._players if player.id == _id]
         if len(player) == 0:
             raise ValueError(f"Player with id {_id} not found")
         return player[0]
 
-    def add_player(self, player: Player) -> None:
+    def add_player(self, player: FantasyPlayer) -> None:
         self._players.append(player)
 
-    def delete_player(self, player: Player) -> None:
+    def delete_player(self, player: FantasyPlayer) -> None:
         self._players.remove(player)
 
-    def get_players_by_team(self, team: Team) -> list[Player]:
+    def get_players_by_team(self, team: Team) -> list[FantasyPlayer]:
         return [player for player in self._players if player.team == team]
 
-    def get_players_by_position(self, position: str) -> list[Player]:
+    def get_players_by_position(self, position: str) -> list[FantasyPlayer]:
         return [player for player in self._players if player.position == position]
 
-    def get_players_by_team_and_position(self, team: Team, position: str) -> list[Player]:
+    def get_players_by_team_and_position(self, team: Team, position: str) -> list[FantasyPlayer]:
         return [player for player in self._players if player.team == team and player.position == position]
 
-    def get_players_organised_by_team(self) -> dict[int: list[Player]]:
+    def get_players_organised_by_team(self) -> dict[int: list[FantasyPlayer]]:
         players_by_team = {}
         for player in self.players:
             if player.team_id not in players_by_team.keys():
@@ -88,7 +88,7 @@ class Season:
             players_by_team[player.team_id].append(player)
         return players_by_team
 
-    def get_players_organised_by_position(self) -> dict[str: list[Player]]:
+    def get_players_organised_by_position(self) -> dict[str: list[FantasyPlayer]]:
         players_by_position = {}
         for player in self.players:
             if player.position not in players_by_position.keys():
@@ -96,7 +96,7 @@ class Season:
             players_by_position[player.position].append(player)
         return players_by_position
 
-    def get_organize_players_by_team_and_position(self) -> dict[int: dict[str: list[Player]]]:
+    def get_organize_players_by_team_and_position(self) -> dict[int: dict[str: list[FantasyPlayer]]]:
         players_by_team_and_position = {}
         for player in self.players:
             if player.team_id not in players_by_team_and_position.keys():
