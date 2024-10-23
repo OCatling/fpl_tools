@@ -1,6 +1,6 @@
 import uuid
 
-from src.model.fantasy_player import FantasyPlayer
+from src.data.model.fantasy_player import FantasyPlayer
 
 
 class Squad(dict):

@@ -49,6 +49,3 @@ class Player(dict):
         self.expected_assists = player_dict['expected_assists']
         self.expected_goal_involvements = player_dict['expected_goal_involvements']
         self.expected_goals_conceded = player_dict['expected_goals_conceded']
-
-    def __str__(self) -> str:
-        return f"{self.web_name} ({self.id})"

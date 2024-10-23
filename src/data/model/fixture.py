@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.model.team import Team
+from src.data.model.team import Team
 
 
 class Fixture(dict):

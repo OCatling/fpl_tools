@@ -1,8 +1,0 @@
-{
-  "queryStringParameters": {
-    "player_id": 1
-  },
-  "resource": "/players/{player_id}",
-  "path": "/players/1",
-  "httpMethod": "GET"
-}

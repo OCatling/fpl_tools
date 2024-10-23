@@ -1,5 +1,0 @@
-{
-  "resource": "/squad/{user_id}/{squad_id}",
-  "path": "/squad/ocatling/143a16cb-c80f-4045-845d-b363381bf6c9",
-  "httpMethod": "GET"
-}

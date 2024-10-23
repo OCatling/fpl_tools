@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from src.model.fantasy_player import FantasyPlayer
-from src.model.fixture import Fixture
-from src.model.team import Team
+from src.data.model.fantasy_player import FantasyPlayer
+from src.data.model.fixture import Fixture
+from src.data.model.team import Team
 
 
 class Season:
@@ -44,7 +44,7 @@ class Season:
         return self._teams[_id]
 
     def get_team_by_name(self, name: str) -> Team:
-        teams = {team.name: team for team in self._teams.items()}
+        teams = self.get_teams_by_name()
         return teams[name]
 
     def add_team(self, team: Team) -> None:
@@ -134,3 +134,6 @@ class Season:
             fixtures_by_team[fixture.away_team.id]["away_games"].append(fixture)
             fixtures_by_team[fixture.away_team.id]["all_games"].append(fixture)
         return fixtures_by_team
+
+    def get_teams_by_name(self) -> dict[str: Team]:
+        return {team.name: team for team in self.teams.values()}

@@ -1,8 +1,8 @@
 from functools import reduce
 
-from src.model.fixture import Fixture
-from src.model.season import Season
-from src.model.team import Team
+from src.data.model import Fixture
+from src.data.model.season import Season
+from src.data.model.team import Team
 
 
 class DifficultyService:
@@ -58,3 +58,20 @@ class DifficultyService:
         fixtures_organised_by_team = self.get_all_teams_period_difficulty(starting_week, finish_week)
         return sorted(fixtures_organised_by_team.values(), key=lambda x: x["difficulty"], reverse=True)
 
+    def get_teams_with_targetable_fixtures(self,
+                                           teams_to_target: list[Team],
+                                           starting_week: int =0,
+                                           finish_week: int = 38) -> dict[int, list[Fixture]]:
+        fixtures_organised_by_team = self.season.organise_fixtures_by_team(starting_week, finish_week)
+        teams_with_targetable_fixtures = {}
+        for team in teams_to_target:
+            fixtures = fixtures_organised_by_team[team.id]["all_games"]
+
+            for fixture in fixtures:
+                team_playing_target: Team = fixture.home_team
+                if fixture.home_team in teams_to_target:
+                    team_playing_target: Team = fixture.away_team
+                if team_playing_target.id not in teams_with_targetable_fixtures:
+                    teams_with_targetable_fixtures[team_playing_target.id] = []
+                teams_with_targetable_fixtures[team_playing_target.id].append(fixture)
+        return teams_with_targetable_fixtures

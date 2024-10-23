@@ -1,8 +1,8 @@
 from src.data import fpl_data_fetcher
-from src.model.fantasy_player import FantasyPlayer
-from src.model.fixture import Fixture
-from src.model.season import Season
-from src.model.team import Team
+from src.data.model.fantasy_player import FantasyPlayer
+from src.data.model import Fixture
+from src.data.model.season import Season
+from src.data.model.team import Team
 
 
 def get_teams() -> dict[int: Team]:

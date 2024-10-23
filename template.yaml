@@ -37,34 +37,17 @@ Resources:
             # explicit routes and methods are recommended for prod instead (see below)
             Path: /{proxy+} # Send requests on any path to the lambda function
             Method: ANY # Send requests using any http method to the lambda function
-  FPL:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      AttributeDefinitions:
-        - AttributeName: <primary_key>
-          AttributeType: S
-      KeySchema:
-        - AttributeName: <partition_key>
-          KeyType: HASH
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
-      StreamSpecification:
-        StreamViewType: NEW_IMAGE
-
-
-        # GetAllTodos:
-        #   Type: Api
-        #   Properties:
-        #     Path: /todos
-        #     Method: GET
-        # GetTodoById:
-        #   Type: Api
-        #   Properties:
-        #     Path: /todos/{todo_id}
-        #     Method: GET
-        # CreateTodo:
-        #   Type: Api
-        #   Properties:
-        #     Path: /todos
-        #     Method: POST
+#  FPL:
+#    Type: AWS::DynamoDB::Table
+#    Properties:
+#      AttributeDefinitions:
+#        - AttributeName: <primary_key>
+#          AttributeType: S
+#      KeySchema:
+#        - AttributeName: <partition_key>
+#          KeyType: HASH
+#      ProvisionedThroughput:
+#        ReadCapacityUnits: 5
+#        WriteCapacityUnits: 5
+#      StreamSpecification:
+#        StreamViewType: NEW_IMAGE

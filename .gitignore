@@ -25,3 +25,5 @@ fpl_*.json
 
 # BUILD
 .aws-sam/
+
+dead

@@ -1,4 +1,4 @@
-from src.model.player import Player
+from src.data.model.player import Player
 
 
 class Team(dict):
